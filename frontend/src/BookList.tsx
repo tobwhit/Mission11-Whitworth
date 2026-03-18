@@ -2,6 +2,7 @@ import type { Book } from './types/Book';
 import { useState, useEffect } from 'react';
 
 function BookList() {
+  // Necesary state variables to keep track of
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
   const [pageNum, setPageNum] = useState<number>(1);
@@ -14,12 +15,15 @@ function BookList() {
       try {
         let url = `https://localhost:5005/Bookstore/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}`;
 
+        // URL add on for sorting functionality
         if (sortOrder) {
           url += `&sortBy=title&sortOrder=${sortOrder}`;
         }
 
         const response = await fetch(url);
         const data = await response.json();
+
+        // Retrieve or calculate state variables
         setBooks(data.books || []);
         setTotalItems(data.totalNumBooks || 0);
         setTotalPages(Math.ceil((data.totalNumBooks || 0) / pageSize));
@@ -46,21 +50,30 @@ function BookList() {
     <div className="container my-4">
       <div className="text-center mb-4">
         <h1 className="display-4">Amazon</h1>
-        <p className="lead text-muted">Let's cut down our name sake for paper and make a profit!</p>
+        <p className="lead text-muted">
+          Let's cut down our name sake for paper and make a profit!
+        </p>
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
+        {/* Toggle sort button to toggle between 3 sort options, asc, desc, off */}
         <button
           type="button"
           className={`btn ${sortOrder ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={toggleSort}
         >
           Sort by Title:{' '}
-          {sortOrder === 'asc' ? '↑ A-Z' : sortOrder === 'desc' ? '↓ Z-A' : 'Off'}
+          {sortOrder === 'asc'
+            ? '↑ A-Z'
+            : sortOrder === 'desc'
+              ? '↓ Z-A'
+              : 'Off'}
         </button>
-
+        {/* Pagination element*/}
         <div className="d-flex align-items-center">
-          <label htmlFor="pageSizeSelect" className="me-2 mb-0">Results per page:</label>
+          <label htmlFor="pageSizeSelect" className="me-2 mb-0">
+            Results per page:
+          </label>
           <select
             id="pageSizeSelect"
             className="form-select form-select-sm w-auto"
@@ -105,7 +118,8 @@ function BookList() {
                     <strong>Pages:</strong> {b.pageCount}
                   </li>
                   <li>
-                    <strong>Price:</strong> <span className="text-success fw-bold">${b.price}</span>
+                    <strong>Price:</strong>{' '}
+                    <span className="text-success fw-bold">${b.price}</span>
                   </li>
                 </ul>
               </div>
@@ -113,6 +127,8 @@ function BookList() {
           </div>
         ))}
       </div>
+
+      {/* Page Navigation */}
       <nav aria-label="Page navigation" className="mt-4">
         <ul className="pagination justify-content-center">
           <li className={`page-item ${pageNum === 1 ? 'disabled' : ''}`}>
@@ -125,6 +141,7 @@ function BookList() {
               Previous
             </button>
           </li>
+          {/* This only displays the number of pages depending on how many results are shown per page */}
           {[...Array(totalPages)].map((_, index) => (
             <li
               key={index + 1}
@@ -140,7 +157,9 @@ function BookList() {
               </button>
             </li>
           ))}
-          <li className={`page-item ${pageNum === totalPages ? 'disabled' : ''}`}>
+          <li
+            className={`page-item ${pageNum === totalPages ? 'disabled' : ''}`}
+          >
             <button
               type="button"
               className="page-link"
