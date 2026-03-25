@@ -9,6 +9,7 @@ import './CartPage.css';
 function CartPage() {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCart();
+  // Calculates the total of all items in the cart
   const totalAmount = cart.reduce((sum, item) => sum + item.subtotal, 0);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
@@ -31,6 +32,7 @@ function CartPage() {
                       {item.subtotal.toFixed(2)}
                     </div>
                   </div>
+                  {/* Remove button to remove an item from the cart */}
                   <button
                     type="button"
                     className="cart-item-remove"

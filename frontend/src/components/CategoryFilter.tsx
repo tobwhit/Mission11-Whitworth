@@ -12,6 +12,7 @@ function CategoryFilter({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        // Calls the api to get all the unique book categories
         const response = await fetch(
           'https://localhost:5005/Bookstore/GetBookCategories'
         );
@@ -26,7 +27,8 @@ function CategoryFilter({
     fetchCategories();
   }, []);
 
-  function handleCheckbocChange({ target }: { target: HTMLInputElement }) {
+  // Function to handle the user checking a box
+  function handleCheckboxChange({ target }: { target: HTMLInputElement }) {
     const updatedCategories = selectedCategories.includes(target.value)
       ? selectedCategories.filter((x) => x !== target.value)
       : [...selectedCategories, target.value];
@@ -46,7 +48,7 @@ function CategoryFilter({
                 type="checkbox"
                 id={c}
                 value={c}
-                onChange={handleCheckbocChange}
+                onChange={handleCheckboxChange}
               />
               <label htmlFor={c}>{c} </label>
             </div>

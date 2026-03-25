@@ -7,6 +7,7 @@ function CartSummary() {
   const totalAmount = cart.reduce((sum, item) => sum + item.subtotal, 0);
   return (
     <>
+      {/* Styling for the cart summary element */}
       <div
         style={{
           position: 'fixed',

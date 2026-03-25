@@ -14,6 +14,7 @@ function App() {
         <CartProvider>
           <Router>
             <Routes>
+              {/* Routes from page to page */}
               <Route path="/" element={<BooksPage />} />
               <Route path="/projects" element={<BooksPage />} />
               <Route path="/cartSummary" element={<CartSummary />} />
