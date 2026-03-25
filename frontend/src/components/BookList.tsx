@@ -1,7 +1,11 @@
-import type { Book } from './types/Book';
+import { useNavigate } from 'react-router-dom';
+import type { Book } from '../types/Book';
 import { useState, useEffect } from 'react';
+import { useCart } from '../context/CartContext';
+import type { CartItem } from '../types/CartItem';
+import CartSummary from './CartSummary';
 
-function BookList() {
+function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   // Necesary state variables to keep track of
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -9,11 +13,15 @@ function BookList() {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
+      const categoryParams = selectedCategories
+        .map((cat) => `category=${encodeURIComponent(cat)}`)
+        .join('&');
       try {
-        let url = `https://localhost:5005/Bookstore/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}`;
+        let url = `https://localhost:5005/Bookstore/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`;
 
         // URL add on for sorting functionality
         if (sortOrder) {
@@ -34,7 +42,7 @@ function BookList() {
     };
 
     fetchBooks();
-  }, [pageSize, pageNum, sortOrder]);
+  }, [pageSize, pageNum, sortOrder, selectedCategories]);
 
   const toggleSort = () => {
     if (sortOrder === null) {
@@ -46,15 +54,22 @@ function BookList() {
     }
   };
 
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (
+    bookID: number,
+    title: string,
+    price: number,
+    quantity = 1,
+    subtotal = price
+  ) => {
+    const newItem: CartItem = { bookID, title, price, quantity, subtotal };
+    addToCart(newItem);
+  };
+
   return (
     <div className="container my-4">
-      <div className="text-center mb-4">
-        <h1 className="display-4">Amazon</h1>
-        <p className="lead text-muted">
-          Let's cut down our name sake for paper and make a profit!
-        </p>
-      </div>
-
+      <CartSummary />
       <div className="d-flex justify-content-between align-items-center mb-4">
         {/* Toggle sort button to toggle between 3 sort options, asc, desc, off */}
         <button
@@ -122,6 +137,13 @@ function BookList() {
                     <span className="text-success fw-bold">${b.price}</span>
                   </li>
                 </ul>
+
+                <button
+                  className="btn btn-success"
+                  onClick={() => handleAddToCart(b.bookID, b.title, b.price)}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>
