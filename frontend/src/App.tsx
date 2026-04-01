@@ -6,6 +6,7 @@ import CartPage from './pages/CartPage';
 import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
 import ToastContainer from './components/ToastContainer';
+import AdminProjectsPage from './pages/AdminBooksPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="/projects" element={<BooksPage />} />
               <Route path="/cartSummary" element={<CartSummary />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/admin" element={<AdminProjectsPage />} />
             </Routes>
           </Router>
           <ToastContainer />

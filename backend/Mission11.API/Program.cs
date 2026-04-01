@@ -11,7 +11,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<BookstoreDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("BookstoreDbContext")));
-builder.Services.AddCors();
+builder.Services.AddCors(options => options.AddPolicy( "AllowReactApp", policy =>
+{
+    policy.WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -22,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x.WithOrigins("http://localhost:4200"));
+app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

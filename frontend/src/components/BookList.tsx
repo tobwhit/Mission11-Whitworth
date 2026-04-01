@@ -1,47 +1,36 @@
-import { useNavigate } from 'react-router-dom';
 import type { Book } from '../types/Book';
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import type { CartItem } from '../types/CartItem';
+import { fetchBooks } from '../api/BooksAPI';
 import CartSummary from './CartSummary';
+import Pagination from './Pagination';
 
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   // Necesary state variables to keep track of
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
   const [pageNum, setPageNum] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      const categoryParams = selectedCategories
-        .map((cat) => `category=${encodeURIComponent(cat)}`)
-        .join('&');
+    const loadBooks = async () => {
       try {
-        let url = `https://localhost:5005/Bookstore/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`;
-
-        // URL add on for sorting functionality
-        if (sortOrder) {
-          url += `&sortBy=title&sortOrder=${sortOrder}`;
-        }
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        // Retrieve or calculate state variables
-        setBooks(data.books || []);
-        setTotalItems(data.totalNumBooks || 0);
-        setTotalPages(Math.ceil((data.totalNumBooks || 0) / pageSize));
+        setLoading(true);
+        const data = await fetchBooks(pageSize, pageNum, selectedCategories);
+        setBooks(data.books);
+        setTotalPages(Math.ceil(data.totalNumBooks / pageSize));
       } catch (error) {
-        console.error('Failed to fetch books:', error);
-        setBooks([]);
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchBooks();
+    loadBooks();
   }, [pageSize, pageNum, sortOrder, selectedCategories]);
 
   const toggleSort = () => {
@@ -67,6 +56,9 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
     addToCart(newItem);
   };
 
+  if (loading) return <p>Loading projects...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+
   return (
     <div className="container my-4">
       <CartSummary />
@@ -84,25 +76,6 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
               ? '↓ Z-A'
               : 'Off'}
         </button>
-        {/* Pagination element*/}
-        <div className="d-flex align-items-center">
-          <label htmlFor="pageSizeSelect" className="me-2 mb-0">
-            Results per page:
-          </label>
-          <select
-            id="pageSizeSelect"
-            className="form-select form-select-sm w-auto"
-            value={pageSize}
-            onChange={(b) => {
-              setPageSize(Number(b.target.value));
-              setPageNum(1);
-            }}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-        </div>
       </div>
 
       <div className="row">
@@ -149,50 +122,16 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
           </div>
         ))}
       </div>
-
-      {/* Page Navigation */}
-      <nav aria-label="Page navigation" className="mt-4">
-        <ul className="pagination justify-content-center">
-          <li className={`page-item ${pageNum === 1 ? 'disabled' : ''}`}>
-            <button
-              type="button"
-              className="page-link"
-              onClick={() => setPageNum(pageNum - 1)}
-              disabled={pageNum === 1}
-            >
-              Previous
-            </button>
-          </li>
-          {/* This only displays the number of pages depending on how many results are shown per page */}
-          {[...Array(totalPages)].map((_, index) => (
-            <li
-              key={index + 1}
-              className={`page-item ${pageNum === index + 1 ? 'active' : ''}`}
-            >
-              <button
-                type="button"
-                className="page-link"
-                onClick={() => setPageNum(index + 1)}
-                disabled={pageNum === index + 1}
-              >
-                {index + 1}
-              </button>
-            </li>
-          ))}
-          <li
-            className={`page-item ${pageNum === totalPages ? 'disabled' : ''}`}
-          >
-            <button
-              type="button"
-              className="page-link"
-              onClick={() => setPageNum(pageNum + 1)}
-              disabled={pageNum === totalPages}
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <Pagination
+        pageNum={pageNum}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        onPageChange={setPageNum}
+        onPageSizeChange={(newSize) => {
+          setPageSize(newSize);
+          setPageNum(1);
+        }}
+      />
     </div>
   );
 }
