@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookstoreDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("BookstoreDbContext")));
 builder.Services.AddCors(options => options.AddPolicy( "AllowReactApp", policy =>
 {
-    policy.WithOrigins("http://localhost:4200")
+    policy.WithOrigins("http://localhost:4200", "https://ashy-rock-08467fe1e.6.azurestaticapps.net/")
         .AllowAnyMethod()
         .AllowAnyHeader();
 }));
