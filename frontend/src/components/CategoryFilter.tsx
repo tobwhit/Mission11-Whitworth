@@ -14,7 +14,7 @@ function CategoryFilter({
       try {
         // Calls the api to get all the unique book categories
         const response = await fetch(
-          'https://localhost:5005/Bookstore/GetBookCategories'
+          'https://mission13-whitworth-akbkfzadarewadck.eastus-01.azurewebsites.net/bookstore/GetBookCategories'
         );
         const data = await response.json();
 

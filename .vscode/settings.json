@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/47e48561-3d2b-414b-97ab-dbdd2f2b2eba/resourceGroups/appsvc_windows_eastus/providers/Microsoft.Web/sites/Mission13-Whitworth",
+  "appService.deploySubpath": "backend/Mission11.API/publish"
+}

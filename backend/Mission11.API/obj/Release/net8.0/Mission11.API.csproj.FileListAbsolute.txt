@@ -69,3 +69,16 @@
 /Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/obj/Release/net8.0/Mission11.API.pdb
 /Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/obj/Release/net8.0/Mission11.API.genruntimeconfig.cache
 /Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/obj/Release/net8.0/ref/Mission11.API.dll
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/web.config
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/appsettings.Development.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/appsettings.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/Mission11.API.deps.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/Mission11.API.runtimeconfig.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/Mission11.API.staticwebassets.endpoints.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/web.config
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/appsettings.Development.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/appsettings.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/Mission11.API.deps.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/Mission11.API.runtimeconfig.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/publish/publish/Mission11.API.staticwebassets.endpoints.json
+/Users/rental/Documents/Mission11-Whitworth/backend/Mission11.API/bin/Release/net8.0/Bookstore.sqlite
