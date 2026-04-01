@@ -19,7 +19,7 @@ export const fetchBooks = async (
       .map((cat) => `category=${encodeURIComponent(cat)}`)
       .join('&');
 
-    const sortParam = sortOrder ? `&sortOrder=${sortOrder}` : '';
+    const sortParam = sortOrder ? `&sortBy=title&sortOrder=${sortOrder}` : '';
 
     const response = await fetch(
       `${API_URL}/allbooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}${sortParam}`
