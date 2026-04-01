@@ -11,15 +11,18 @@ const API_URL =
 export const fetchBooks = async (
   pageSize: number,
   pageNum: number,
-  selectedCategories: string[]
+  selectedCategories: string[],
+  sortOrder: 'asc' | 'desc' | null = null
 ): Promise<fetchBooksResponse> => {
   try {
     const categoryParams = selectedCategories
       .map((cat) => `category=${encodeURIComponent(cat)}`)
       .join('&');
 
+    const sortParam = sortOrder ? `&sortOrder=${sortOrder}` : '';
+
     const response = await fetch(
-      `${API_URL}/allbooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
+      `${API_URL}/allbooks?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}${sortParam}`
     );
 
     if (!response.ok) {
